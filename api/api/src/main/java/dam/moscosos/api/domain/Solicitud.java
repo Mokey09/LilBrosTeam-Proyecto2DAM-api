@@ -1,4 +1,5 @@
-package dam.moscosos.api.domain;
+
+/*package dam.moscosos.api.domain;
 
 import dam.moscosos.api.enums.Estado;
 import jakarta.persistence.*;
@@ -32,3 +33,4 @@ public class Solicitud {
     @ManyToOne(fetch = FetchType.LAZY)
     private Profesor profesor;
 }
+*/

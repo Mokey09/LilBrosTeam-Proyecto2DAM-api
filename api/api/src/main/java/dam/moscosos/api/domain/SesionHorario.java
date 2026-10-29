@@ -1,3 +1,4 @@
+/*
 package dam.moscosos.api.domain;
 
 import jakarta.persistence.*;
@@ -36,9 +37,11 @@ public class SesionHorario {
     private GrupoAlumnado grupoAlumnado;
 
 
-    /*@Column(name = "cod_grupo")
-    private String codGrupo;*/
+    @Column(name = "cod_grupo")
+    private String codGrupo;
 
-    /*@Column(name = "id_profesor")
-    private String idProfesor;*/
+    @Column(name = "id_profesor")
+    private String idProfesor;
+
 }
+*/

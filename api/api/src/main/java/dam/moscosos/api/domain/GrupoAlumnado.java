@@ -1,3 +1,4 @@
+/*
 package dam.moscosos.api.domain;
 
 import jakarta.persistence.*;
@@ -13,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "grupos_alumnado")
 public class GrupoAlumnado {
-    // TODO
-
-
-
-
-
+    // TODO lul LMAO
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Integer id;
 
     // Relaciones
 
     @OneToMany(mappedBy = "Sesion Horario", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
 }
+*/

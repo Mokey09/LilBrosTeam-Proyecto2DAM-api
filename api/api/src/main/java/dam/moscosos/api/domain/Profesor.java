@@ -1,3 +1,4 @@
+/*
 package dam.moscosos.api.domain;
 
 import dam.moscosos.api.enums.Rol;
@@ -65,3 +66,4 @@ public class Profesor {
     @OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
 }
+*/

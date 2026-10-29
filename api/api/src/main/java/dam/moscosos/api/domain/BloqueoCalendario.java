@@ -1,8 +1,7 @@
 package dam.moscosos.api.domain;
 
 import dam.moscosos.api.enums.Tipo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +16,11 @@ import java.util.ArrayList;
 @Entity(name = "bloqueo_calendario")
 public class BloqueoCalendario {
     // Atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Integer id;
+
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
 
