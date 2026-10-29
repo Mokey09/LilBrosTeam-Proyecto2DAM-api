@@ -29,7 +29,7 @@ public class BloqueoCalendarioServiceImpl implements BloqueoCalendarioService {
 
     @Override
     public List<BloqueoCalendario> buscarPorRango(LocalDate fechaInicio, LocalDate fechaFin) {
-        return bloqueoCalendarioRepository.findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(fechaInicio, fechaFin);
+        return bloqueoCalendarioRepository.findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(fechaFin, fechaInicio);
     }
 
     @Override
