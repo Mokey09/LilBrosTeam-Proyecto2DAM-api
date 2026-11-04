@@ -22,6 +22,8 @@ public class BloqueCalendarioController {
         return bloqueoCalendarioService.findAll();
     }
 
+    // TODO anadir documentacion en Swagger
+
     // GET http://localhost:8080/bloqueados/dia/2026-12-24
     @GetMapping("/bloqueados/dia/{fecha}")
     public List<BloqueoCalendario> buscarPorDia(@PathVariable LocalDate fecha) {
@@ -66,6 +68,8 @@ public class BloqueCalendarioController {
     }
 
     // DELETE http://localhost:8080/bloqueados/desbloquear?desde=2026-12-25&hasta=2026-12-26
+    // TODO no admitir repetidos
+    // TODO recorrido que desbloquee dia por dia en lugar de rango
     @DeleteMapping("/bloqueados/desbloquear")
     public String desbloquearDias(@RequestParam LocalDate desde, @RequestParam LocalDate hasta) {
         bloqueoCalendarioService.desbloquearDias(desde, hasta);
