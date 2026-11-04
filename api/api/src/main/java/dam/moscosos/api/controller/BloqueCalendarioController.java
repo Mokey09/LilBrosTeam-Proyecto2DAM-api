@@ -61,14 +61,13 @@ public class BloqueCalendarioController {
     }
      */
 
-
+    // TODO no admitir repetidos
     @PostMapping("/bloqueados")
     public ResponseEntity<BloqueoCalendario> addBloqueoCalendario(@RequestBody BloqueoCalendario bloqueoCalendario) {
         return new ResponseEntity<>(bloqueoCalendarioService.bloquearCalendario(bloqueoCalendario), HttpStatus.OK);
     }
 
     // DELETE http://localhost:8080/bloqueados/desbloquear?desde=2026-12-25&hasta=2026-12-26
-    // TODO no admitir repetidos
     // TODO recorrido que desbloquee dia por dia en lugar de rango
     @DeleteMapping("/bloqueados/desbloquear")
     public String desbloquearDias(@RequestParam LocalDate desde, @RequestParam LocalDate hasta) {
