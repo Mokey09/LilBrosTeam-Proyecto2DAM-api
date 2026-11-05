@@ -23,7 +23,6 @@ public class BloqueCalendarioController {
     }
 
     // TODO anadir documentacion en Swagger
-
     // GET http://localhost:8080/bloqueados/dia/2026-12-24
     @GetMapping("/bloqueados/dia/{fecha}")
     public List<BloqueoCalendario> buscarPorDia(@PathVariable LocalDate fecha) {

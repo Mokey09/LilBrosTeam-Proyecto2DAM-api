@@ -1,4 +1,3 @@
-/*
 package dam.moscosos.api.domain;
 
 import dam.moscosos.api.enums.Rol;
@@ -19,7 +18,7 @@ public class Profesor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nombre")
     private String nombre;
@@ -27,8 +26,11 @@ public class Profesor {
     @Column(name = "apellidos")
     private String apellidos;
 
-    @Column(name = "dni")
+    @Column(name = "dni", unique = true)
     private String dni;
+
+    @Column(name = "email", unique = true)
+    private String email;
 
     @Column(name = "contrasena")
     private String contrasena;
@@ -60,10 +62,19 @@ public class Profesor {
     private String departamento;
 
     // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GrupoAlumnado grupoAlumnado;
+
+     /*
     @OneToMany(mappedBy = "solicitud", cascade = CascadeType.ALL)
     private List<Solicitud> solcitudes = new ArrayList<>();
 
     @OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
+    */
 }
-*/
+
+
+
+
+

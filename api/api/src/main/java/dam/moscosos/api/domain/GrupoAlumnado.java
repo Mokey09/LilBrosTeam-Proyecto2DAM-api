@@ -1,4 +1,4 @@
-/*
+
 package dam.moscosos.api.domain;
 
 import jakarta.persistence.*;
@@ -17,12 +17,20 @@ public class GrupoAlumnado {
     // TODO lul LMAO
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Integer id;
+    @Column(name = "cod_grupo")
+    private Integer codGrupo;
+
+    @Column(name = "id_profesor")
+    private Integer idProfesor;
+
+    @Column(name = "nombre_grupo")
+    private String nombreGrupo;
 
     // Relaciones
 
-    @OneToMany(mappedBy = "Sesion Horario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sesion_horario", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
+    private List<Profesor> profesores = new ArrayList<>();
 }
-*/
