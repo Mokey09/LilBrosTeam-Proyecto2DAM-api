@@ -38,6 +38,23 @@ public class ProfesorController {
     }
 
     // POST http://localhost:8080/profesores
+    /*
+        {
+              "nombre": "Juan",
+              "apellidos": "Pérez García",
+              "dni": "12345678A",
+              "email": "juan.perez@moscosos.dam",
+              "contrasena": "123456",
+              "codigoPostal": 3501,
+              "localidad": "Benidorm",
+              "telefono": "600123456",
+              "direccion": "Calle Principal 12",
+              "cuerpo": "Secundaria",
+              "rol": "DIRECTOR",
+              "especialidad": "Informática",
+              "departamento": "Tecnología"
+        }
+     */
     @PostMapping("/profesores")
     public ResponseEntity<Profesor> save(@RequestBody Profesor profesor) {
         return new ResponseEntity<>(profesorService.save(profesor), HttpStatus.OK);

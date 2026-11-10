@@ -1,10 +1,9 @@
 
 package dam.moscosos.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +27,16 @@ public class GrupoAlumnado {
 
     // Relaciones
 
+    // esto evita bucles de peticion profesor-sesion y tambien tiene exclusiones lombok
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "grupoAlumnado", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "grupoAlumnado", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "grupoAlumnado")
     private List<Profesor> profesores = new ArrayList<>();
 }
