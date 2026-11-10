@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface BloqueoCalendarioRepository extends JpaRepository<BloqueoCalendario,Integer> {
    // List<BloqueoCalendario> findByFechaInicioAndFechaFin(LocalDate fechaInicio, LocalDate fechaFin);
+    List<BloqueoCalendario> findAll();
    List<BloqueoCalendario> findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
            LocalDate fechaFin,
            LocalDate fechaInicio

@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -65,7 +62,8 @@ public class Profesor {
     @ManyToOne(fetch = FetchType.LAZY)
     private GrupoAlumnado grupoAlumnado;
 
-     /*
+
+    /*
     @OneToMany(mappedBy = "solicitud", cascade = CascadeType.ALL)
     private List<Solicitud> solcitudes = new ArrayList<>();
 

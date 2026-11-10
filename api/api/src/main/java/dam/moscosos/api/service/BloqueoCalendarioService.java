@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface BloqueoCalendarioService {
     List<BloqueoCalendario> buscarPorRango(LocalDate fechaInicio, LocalDate fechaFin);
-
     List<BloqueoCalendario> buscarPorDia(LocalDate dia);
     List<BloqueoCalendario> findByTipo(Tipo tipo);
     BloqueoCalendario bloquearCalendario(BloqueoCalendario calendario);
