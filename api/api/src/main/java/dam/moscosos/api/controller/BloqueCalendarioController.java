@@ -17,6 +17,8 @@ public class BloqueCalendarioController {
     @Autowired
     private BloqueoCalendarioService bloqueoCalendarioService;
 
+    // TODO anadir documentacion en Swagger
+
     @GetMapping("/bloqueados")
     public List<BloqueoCalendario> findAll() {
         return bloqueoCalendarioService.findAll();
@@ -32,7 +34,7 @@ public class BloqueCalendarioController {
     // GET http://localhost:8080/bloqueados/rango?inicio=2026-12-23&fin=2027-01-05
     @GetMapping("/bloqueados/rango")
     public List<BloqueoCalendario> buscarPorRango(@RequestParam LocalDate inicio, @RequestParam LocalDate fin) {
-        return bloqueoCalendarioService.buscarPorRango(inicio,fin);
+        return bloqueoCalendarioService.buscarPorRango(inicio, fin);
     }
 
     // GET http://localhost:8080/bloqueados/tipo/VACACIONES
@@ -44,35 +46,29 @@ public class BloqueCalendarioController {
         return bloqueoCalendarioService.findByTipo(Tipo.valueOf(tipo.toUpperCase().trim()));
     }
 
-    //alternativa fácil
-    /*@PostMapping("/bloqueados")
-    public BloqueoCalendario addBloqueoCalendario(@RequestBody BloqueoCalendario bloqueoCalendario) {
-        return bloqueoCalendarioService.bloquearCalendario(bloqueoCalendario);
-    }*/
-
-
-    /* BODY
-    {
-      "fechaInicio": "2026-12-23",
-      "fechaFin": "2027-01-07",
-      "tipo": "VACACIONES",
-      "comentario": "Vacaciones de Navidad"
-    }
+    /* POST http://localhost:8080/bloqueados
+        BODY (fechaFin es opcional; si no se envía, se bloquea solo fechaInicio)
+        {
+            "fechaInicio": "2026-12-23",
+            "fechaFin": "2027-01-07",
+            "tipo": "VACACIONES",
+            "comentario": "Vacaciones de Navidad"
+        }
      */
-
-    // TODO no admitir repetidos
     @PostMapping("/bloqueados")
-    public ResponseEntity<BloqueoCalendario> addBloqueoCalendario(@RequestBody BloqueoCalendario bloqueoCalendario) {
-        return new ResponseEntity<>(bloqueoCalendarioService.bloquearCalendario(bloqueoCalendario), HttpStatus.OK);
+    public ResponseEntity<List<BloqueoCalendario>> addBloqueoCalendario(@RequestBody BloqueoRequest request) {
+        List<BloqueoCalendario> creados = bloqueoCalendarioService.bloquearCalendario(
+                request.fechaInicio(), request.fechaFin(), request.tipo(), request.comentario());
+        return new ResponseEntity<>(creados, HttpStatus.CREATED);
     }
 
     // DELETE http://localhost:8080/bloqueados/desbloquear?desde=2026-12-25&hasta=2026-12-26
-    // TODO recorrido que desbloquee dia por dia en lugar de rango
     @DeleteMapping("/bloqueados/desbloquear")
     public String desbloquearDias(@RequestParam LocalDate desde, @RequestParam LocalDate hasta) {
         bloqueoCalendarioService.desbloquearDias(desde, hasta);
         return "Días desbloqueados";
     }
 
-
+    // Cuerpo del POST: la entidad ya no tiene fechaInicio/fechaFin, así que se usa un record aparte
+    public record BloqueoRequest(LocalDate fechaInicio, LocalDate fechaFin, Tipo tipo, String comentario) {}
 }
