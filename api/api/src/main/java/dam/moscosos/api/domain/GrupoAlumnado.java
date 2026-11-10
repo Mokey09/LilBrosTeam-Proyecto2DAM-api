@@ -28,9 +28,9 @@ public class GrupoAlumnado {
 
     // Relaciones
 
-    @OneToMany(mappedBy = "sesion_horario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "grupoAlumnado", cascade = CascadeType.ALL)
     private List<SesionHorario> sesiones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "grupoAlumnado", cascade = CascadeType.ALL)
     private List<Profesor> profesores = new ArrayList<>();
 }
