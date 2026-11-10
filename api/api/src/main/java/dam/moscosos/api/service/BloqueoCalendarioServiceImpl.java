@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BloqueoCalendarioServiceImpl implements BloqueoCalendarioService {
@@ -63,21 +65,19 @@ public class BloqueoCalendarioServiceImpl implements BloqueoCalendarioService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El rango no puede superar " + MAX_DIAS + " días");
         }
 
-        // Si algún día del rango ya está bloqueado, se rechaza toda la petición
-        List<LocalDate> yaBloqueados = bloqueoCalendarioRepository
+        // Días ya bloqueados dentro del rango: se respetan tal cual (con su tipo y comentario originales)
+        Set<LocalDate> yaBloqueados = bloqueoCalendarioRepository
                 .findByFechaBetweenOrderByFechaAsc(inicio, fin)
                 .stream()
                 .map(BloqueoCalendario::getFecha)
-                .toList();
-        if (!yaBloqueados.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Ya hay días bloqueados en ese rango: " + yaBloqueados);
-        }
+                .collect(Collectors.toSet());
 
-        // Una fila por día
+        // Una fila por día, saltándose los que ya existen
         List<BloqueoCalendario> nuevos = new ArrayList<>();
         for (LocalDate dia = inicio; !dia.isAfter(fin); dia = dia.plusDays(1)) {
-            nuevos.add(new BloqueoCalendario(null, dia, tipo, comentario));
+            if (!yaBloqueados.contains(dia)) {
+                nuevos.add(new BloqueoCalendario(null, dia, tipo, comentario));
+            }
         }
 
         return bloqueoCalendarioRepository.saveAll(nuevos);
