@@ -45,14 +45,15 @@ public class BloqueCalendarioController {
         return bloqueoCalendarioService.findByTipo(Tipo.valueOf(tipo.toUpperCase().trim()));
     }
 
-    // POST http://localhost:8080/bloqueados
-    // BODY (fechaFin es opcional; si no se envía, se bloquea solo fechaInicio)
-    // {
-    //   "fechaInicio": "2026-12-23",
-    //   "fechaFin": "2027-01-07",
-    //   "tipo": "VACACIONES",
-    //   "comentario": "Vacaciones de Navidad"
-    // }
+    /* POST http://localhost:8080/bloqueados
+        BODY (fechaFin es opcional; si no se envía, se bloquea solo fechaInicio)
+        {
+            "fechaInicio": "2026-12-23",
+            "fechaFin": "2027-01-07",
+            "tipo": "VACACIONES",
+            "comentario": "Vacaciones de Navidad"
+        }
+     */
     @PostMapping("/bloqueados")
     public ResponseEntity<List<BloqueoCalendario>> addBloqueoCalendario(@RequestBody BloqueoRequest request) {
         List<BloqueoCalendario> creados = bloqueoCalendarioService.bloquearCalendario(
