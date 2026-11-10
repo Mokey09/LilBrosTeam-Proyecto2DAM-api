@@ -5,32 +5,28 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "bloqueo_calendario")
 public class BloqueoCalendario {
-    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 
-    @Column(name = "fecha_inicio")
-    private LocalDate fechaInicio;
+    // Un día por fila. unique = true impide repetidos también a nivel de base de datos
+    @Column(name = "fecha", nullable = false, unique = true)
+    private LocalDate fecha;
 
-    @Column(name = "fecha_fin")
-    private LocalDate fechaFin;
-
+    // Se guarda el nombre en vez de la posicion
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
     private Tipo tipo;
 
-    // TODO esto hay que verlo
     @Column(name = "comentario")
     private String comentario;
 }

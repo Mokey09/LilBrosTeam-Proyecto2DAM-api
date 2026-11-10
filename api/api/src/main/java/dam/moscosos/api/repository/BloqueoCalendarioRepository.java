@@ -7,21 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface BloqueoCalendarioRepository extends JpaRepository<BloqueoCalendario,Integer> {
-   // List<BloqueoCalendario> findByFechaInicioAndFechaFin(LocalDate fechaInicio, LocalDate fechaFin);
-   List<BloqueoCalendario> findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
-           LocalDate fechaFin,
-           LocalDate fechaInicio
-   );
+public interface BloqueoCalendarioRepository extends JpaRepository<BloqueoCalendario, Integer> {
 
-    /*List<BloqueoCalendario> findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
-            LocalDate fechaFin,
-            LocalDate fechaInicio
-    );*/
+    List<BloqueoCalendario> findByFecha(LocalDate fecha);
+
+    // Between es inclusivo en ambos extremos
+    List<BloqueoCalendario> findByFechaBetweenOrderByFechaAsc(LocalDate inicio, LocalDate fin);
 
     List<BloqueoCalendario> findByTipo(Tipo tipo);
 
-    //Alguno mas?
-
-
+    void deleteByFechaBetween(LocalDate desde, LocalDate hasta);
 }
