@@ -88,8 +88,23 @@ public class SesionHorarioServiceImpl implements SesionHorarioService {
 
     @Override
     public SesionHorario modificarSesion(Integer id, SesionHorario sesion) {
-        // TODO esto me da mucho miedo
-        return null;
+        SesionHorario sesionExistente = sesionHorarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Sesión no encontrada: " + id
+                ));
+
+        // Guardar los datos nuevos
+        sesionExistente.setHoraInicio(sesion.getHoraInicio());
+        sesionExistente.setHoraFin(sesion.getHoraFin());
+        sesionExistente.setDiaSemana(sesion.getDiaSemana());
+        sesionExistente.setCodGrupo(sesion.getCodGrupo());
+        sesionExistente.setIdProfesor(sesion.getIdProfesor());
+
+        sesionExistente.setProfesor(sesion.getProfesor());
+        sesionExistente.setGrupoAlumnado(sesion.getGrupoAlumnado());
+
+        return sesionHorarioRepository.save(sesionExistente);
     }
 
     // === DELETE ===
