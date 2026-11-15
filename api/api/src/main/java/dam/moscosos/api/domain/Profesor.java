@@ -1,5 +1,6 @@
 package dam.moscosos.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;   // CAMBIO: import nuevo
 import dam.moscosos.api.enums.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,11 @@ public class Profesor {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "contrasena")
+    // CAMBIO: WRITE_ONLY -> la contraseña se acepta al RECIBIR JSON (crear/editar/login)
+    // pero NUNCA se incluye al DEVOLVERLO. Antes, GET /profesores la mostraba en claro.
+    // Lo que se guarda aquí es el hash BCrypt (ver ProfesorServiceImpl), nunca el texto original.
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
     @Column(name = "cp")
@@ -48,9 +53,13 @@ public class Profesor {
     @Column(name = "cuerpo")
     private String cuerpo;
 
-    // TODO roles -> dependiendo del rol tiene X permisos
-    @Column(name = "rol")
-    private Rol rol;
+    // CAMBIO: antes sin @Enumerated, JPA guardaba la POSICIÓN (0,1,2). Si reordenabas el enum
+    // cambiaban los permisos de todos. Ahora se guarda el nombre, como en BloqueoCalendario.
+    // También: nullable = false y valor por defecto USUARIO, para que nunca haya un profesor sin rol
+    // (ProfesorUserDetailsService lo necesita para construir los permisos).
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Rol rol = Rol.USUARIO;
 
     @Column(name = "especialidad")
     private String especialidad;
@@ -71,8 +80,3 @@ public class Profesor {
     private List<SesionHorario> sesiones = new ArrayList<>();
     */
 }
-
-
-
-
-

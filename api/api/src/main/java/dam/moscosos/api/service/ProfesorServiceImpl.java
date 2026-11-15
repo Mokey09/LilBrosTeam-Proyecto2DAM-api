@@ -4,6 +4,7 @@ import dam.moscosos.api.domain.Profesor;
 import dam.moscosos.api.repository.ProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;   // CAMBIO: import nuevo
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,6 +16,10 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Autowired
     private ProfesorRepository profesorRepository;
+
+    // CAMBIO: nuevo. Es el BCryptPasswordEncoder definido en SecurityConfig
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Profesor> findAll() {
@@ -33,6 +38,11 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Override
     public Profesor save(Profesor profesor) {
+        // CAMBIO: validamos y hasheamos la contraseña antes de guardar. Antes se guardaba tal cual llegaba.
+        if (profesor.getContrasena() == null || profesor.getContrasena().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es obligatoria");
+        }
+        profesor.setContrasena(passwordEncoder.encode(profesor.getContrasena()));
         return profesorRepository.save(profesor);
     }
 
@@ -47,7 +57,14 @@ public class ProfesorServiceImpl implements ProfesorService {
         profesor.setApellidos(profesorDetalles.getApellidos());
         profesor.setDni(profesorDetalles.getDni());
         profesor.setEmail(profesorDetalles.getEmail());
-        profesor.setContrasena(profesorDetalles.getContrasena());
+
+        // CAMBIO: antes se copiaba la contraseña directamente. Ahora, como GET ya no la devuelve,
+        // un PUT típico (GET -> editar -> PUT) llegaría SIN contraseña y la borraría.
+        // Solo se cambia si viene una nueva, y se guarda hasheada; si no, se conserva la actual.
+        if (profesorDetalles.getContrasena() != null && !profesorDetalles.getContrasena().isBlank()) {
+            profesor.setContrasena(passwordEncoder.encode(profesorDetalles.getContrasena()));
+        }
+
         profesor.setCodigoPostal(profesorDetalles.getCodigoPostal());
         profesor.setLocalidad(profesorDetalles.getLocalidad());
         profesor.setTelefono(profesorDetalles.getTelefono());
