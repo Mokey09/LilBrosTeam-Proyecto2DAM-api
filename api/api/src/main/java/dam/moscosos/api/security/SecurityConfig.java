@@ -37,11 +37,11 @@ public class SecurityConfig {
 
                 // Calendario: leer lo puede hacer cualquier usuario autenticado...
                 .requestMatchers(HttpMethod.GET, "/bloqueados/**").authenticated()
-                // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR (AJUSTA esto a tu criterio)
+                // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR
                 .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                // Gestión de profesores: solo DIRECTOR (AJUSTA esto a tu criterio)
-                .requestMatchers("/profesores/**").hasRole("DIRECTOR")
+                // Gestión de profesores: solo DIRECTOR TODO(preguntar)
+                .requestMatchers("/profesores/**").hasAnyRole("GESTOR", "DIRECTOR")
 
                 // Cualquier otra ruta que añadas en el futuro exige estar autenticado
                 .anyRequest().authenticated())

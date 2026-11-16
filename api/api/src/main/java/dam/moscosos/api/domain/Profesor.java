@@ -72,7 +72,7 @@ public class Profesor {
     private GrupoAlumnado grupoAlumnado;
 
 
-    /*
+/*
     @OneToMany(mappedBy = "solicitud", cascade = CascadeType.ALL)
     private List<Solicitud> solcitudes = new ArrayList<>();
 
