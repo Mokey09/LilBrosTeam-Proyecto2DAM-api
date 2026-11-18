@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
 
                 // Gestión de profesores: solo DIRECTOR TODO(preguntar)
-                .requestMatchers("/profesores/**").hasAnyRole("GESTOR", "DIRECTOR")
+                .requestMatchers("/profesores/**").hasAnyRole( "DIRECTOR")
 
                 // Cualquier otra ruta que añadas en el futuro exige estar autenticado
                 .anyRequest().authenticated())

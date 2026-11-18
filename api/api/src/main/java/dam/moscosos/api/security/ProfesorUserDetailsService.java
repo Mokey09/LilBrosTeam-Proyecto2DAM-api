@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * NUEVO: le explica a Spring Security cómo buscar un usuario.
- * Usamos el email como "username" y reutilizamos tu ProfesorRepository existente.
+ * Usamos el email como "username" y reutilizamos ProfesorRepository.
  */
 @Service
 public class ProfesorUserDetailsService implements UserDetailsService {
