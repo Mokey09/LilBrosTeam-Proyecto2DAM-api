@@ -25,36 +25,39 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtFilter) throws Exception {
         http
-            // CSRF protege sesiones con cookies; esta API es sin sesión y usa tokens, así que se desactiva
-            .csrf(csrf -> csrf.disable())
-            // No se crea sesión en el servidor: la identidad viaja en el token de cada petición
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // IMPORTANTE: Spring aplica la PRIMERA regla que coincida, así que el orden importa
+                // CSRF protege sesiones con cookies; esta API es sin sesión y usa tokens, así que se desactiva
+                .csrf(csrf -> csrf.disable())
+                // No se crea sesión en el servidor: la identidad viaja en el token de cada petición
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // IMPORTANTE: Spring aplica la PRIMERA regla que coincida, así que el orden importa
 
-                // Único endpoint público
-                .requestMatchers("/auth/login").permitAll()
+                        // Único endpoint público
+                        .requestMatchers("/auth/login").permitAll()
 
-                // Calendario: leer lo puede hacer cualquier usuario autenticado...
-                .requestMatchers(HttpMethod.GET, "/bloqueados/**").authenticated()
-                // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR
-                .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
+                        // Swagger UI y documentación OpenAPI (públicos para poder abrir la página; los endpoints siguen protegidos)
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                // ...pero crear/borrar sesiones solo GESTOR y DIRECTOR
-                .requestMatchers("/sesiones/**").hasAnyRole("GESTOR", "DIRECTOR")
+                        // Calendario: leer lo puede hacer cualquier usuario autenticado...
+                        .requestMatchers(HttpMethod.GET, "/bloqueados/**").authenticated()
+                        // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR
+                        .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                // ...pero crear/borrar grupos solo GESTOR y DIRECTOR
-                .requestMatchers("/grupos/**").hasAnyRole("GESTOR", "DIRECTOR")
+                        // ...pero crear/borrar sesiones solo GESTOR y DIRECTOR
+                        .requestMatchers("/sesiones/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                // Gestión de profesores: solo DIRECTOR
-                .requestMatchers("/profesores/**").hasAnyRole( "DIRECTOR")
+                        // ...pero crear/borrar grupos solo GESTOR y DIRECTOR
+                        .requestMatchers("/grupos/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                // Cualquier otra ruta que añadas en el futuro exige estar autenticado
-                .anyRequest().authenticated())
-            // Sin token o token inválido: responde 401 limpio (por defecto sería 403)
-            .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-            // Nuestro filtro JWT va antes del filtro estándar de usuario/contraseña
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        // Gestión de profesores: solo DIRECTOR
+                        .requestMatchers("/profesores/**").hasAnyRole( "DIRECTOR")
+
+                        // Cualquier otra ruta que añadas en el futuro exige estar autenticado
+                        .anyRequest().authenticated())
+                // Sin token o token inválido: responde 401 limpio (por defecto sería 403)
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                // Nuestro filtro JWT va antes del filtro estándar de usuario/contraseña
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
