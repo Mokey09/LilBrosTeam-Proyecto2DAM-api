@@ -86,6 +86,16 @@ public class SesionHorarioController {
     // === POSTs ===
 
     // POST http://localhost:8080/sesiones
+
+    /*
+        {
+            "horaInicio": "09:30:00",
+            "horaFin": "12:00:00",
+            "diaSemana": 1,
+            "codGrupo": 1,
+            "idProfesor": 1
+        }
+    */
     @PostMapping("/sesiones")
     public ResponseEntity<SesionHorario> crearSesionHorario(@RequestBody SesionHorario sesion) {
         return new ResponseEntity<>(sesionHorarioService.crearSesion(sesion), HttpStatus.CREATED);
