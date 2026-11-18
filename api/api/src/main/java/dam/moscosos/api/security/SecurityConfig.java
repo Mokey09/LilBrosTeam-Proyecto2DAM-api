@@ -40,7 +40,13 @@ public class SecurityConfig {
                 // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR
                 .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                // Gestión de profesores: solo DIRECTOR TODO(preguntar)
+                // ...pero crear/borrar sesiones solo GESTOR y DIRECTOR
+                .requestMatchers("/sesiones/**").hasAnyRole("GESTOR", "DIRECTOR")
+
+                // ...pero crear/borrar grupos solo GESTOR y DIRECTOR
+                .requestMatchers("/grupos/**").hasAnyRole("GESTOR", "DIRECTOR")
+
+                // Gestión de profesores: solo DIRECTOR
                 .requestMatchers("/profesores/**").hasAnyRole( "DIRECTOR")
 
                 // Cualquier otra ruta que añadas en el futuro exige estar autenticado
