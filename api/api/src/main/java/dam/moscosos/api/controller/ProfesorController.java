@@ -38,22 +38,22 @@ public class ProfesorController {
     }
 
     // POST http://localhost:8080/profesores
-    /*
+    /* EL DNI Y EMAIL SON UNICOS
         {
-              "nombre": "Juan",
-              "apellidos": "Pérez García",
-              "dni": "12345678A",
-              "email": "juan.perez@moscosos.dam",
-              "contrasena": "123456",
-              "codigoPostal": 3501,
-              "localidad": "Benidorm",
-              "telefono": "600123456",
-              "direccion": "Calle Principal 12",
-              "cuerpo": "Secundaria",
-              "rol": "DIRECTOR",
-              "especialidad": "Informática",
-              "departamento": "Tecnología"
-        }
+          "nombre": "Laura",
+          "apellidos": "García Pérez",
+          "dni": "12345678A",
+          "email": "laura.garcia@centro.es",
+          "contrasena": "1234",
+          "rol": "USUARIO",
+          "cuerpo": "Profesor de Enseñanza Secundaria",
+          "departamento": "Informática",
+          "especialidad": "Programación",
+          "direccion": "Calle Mayor 12",
+          "localidad": "Valencia",
+          "cp": 46001,
+          "telefono": "600123456"
+}
      */
     @PostMapping("/profesores")
     public ResponseEntity<Profesor> save(@RequestBody Profesor profesor) {
