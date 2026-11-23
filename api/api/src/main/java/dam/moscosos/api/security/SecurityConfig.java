@@ -40,13 +40,14 @@ public class SecurityConfig {
 
                         // Calendario: leer lo puede hacer cualquier usuario autenticado...
                         .requestMatchers(HttpMethod.GET, "/bloqueados/**").authenticated()
-                        // ...pero crear/borrar bloqueos solo GESTOR y DIRECTOR
                         .requestMatchers("/bloqueados/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                        // ...pero crear/borrar sesiones solo GESTOR y DIRECTOR
+                        // Sesiones: ver cualquiera autenticado, modificar solo GESTOR y DIRECTOR
+                        .requestMatchers(HttpMethod.GET, "/sesiones/**").authenticated()
                         .requestMatchers("/sesiones/**").hasAnyRole("GESTOR", "DIRECTOR")
 
-                        // ...pero crear/borrar grupos solo GESTOR y DIRECTOR
+                        // Grupos: ver cualquiera autenticado, modificar solo GESTOR y DIRECTOR
+                        .requestMatchers(HttpMethod.GET, "/grupos/**").authenticated()
                         .requestMatchers("/grupos/**").hasAnyRole("GESTOR", "DIRECTOR")
 
                         // Gestión de profesores: solo DIRECTOR
