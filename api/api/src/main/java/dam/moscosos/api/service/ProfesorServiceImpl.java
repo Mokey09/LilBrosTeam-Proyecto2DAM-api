@@ -52,6 +52,25 @@ public class ProfesorServiceImpl implements ProfesorService {
         Profesor profesor = profesorRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profesor no encontrado con ID: " + id));
 
+        // 1.1 Datos obligatorios: un formulario de edición no puede dejarlos en blanco
+        if (esVacio(profesorDetalles.getNombre()) || esVacio(profesorDetalles.getApellidos())
+                || esVacio(profesorDetalles.getDni()) || esVacio(profesorDetalles.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Nombre, apellidos, DNI y email son obligatorios");
+        }
+
+        // 1.2 DNI y email son únicos: si ya los tiene OTRO profesor, 409 Conflict en vez de un 500 de la BD
+        profesorRepository.findByDni(profesorDetalles.getDni())
+                .filter(otro -> !otro.getId().equals(id))
+                .ifPresent(otro -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe otro profesor con ese DNI");
+                });
+        profesorRepository.findByEmail(profesorDetalles.getEmail())
+                .filter(otro -> !otro.getId().equals(id))
+                .ifPresent(otro -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe otro profesor con ese email");
+                });
+
         // 2. Actualizamos cada campo mapeando los datos nuevos (profesorDetalles) al objeto de la BD (profesor)
         profesor.setNombre(profesorDetalles.getNombre());
         profesor.setApellidos(profesorDetalles.getApellidos());
@@ -70,13 +89,25 @@ public class ProfesorServiceImpl implements ProfesorService {
         profesor.setTelefono(profesorDetalles.getTelefono());
         profesor.setDireccion(profesorDetalles.getDireccion());
         profesor.setCuerpo(profesorDetalles.getCuerpo());
-        profesor.setRol(profesorDetalles.getRol());
+        // El rol es obligatorio en la BD: si no llega uno, se conserva el actual
+        if (profesorDetalles.getRol() != null) {
+            profesor.setRol(profesorDetalles.getRol());
+        }
         profesor.setEspecialidad(profesorDetalles.getEspecialidad());
         profesor.setDepartamento(profesorDetalles.getDepartamento());
-        profesor.setGrupoAlumnado(profesorDetalles.getGrupoAlumnado());
+
+        // El formulario de edición de la app de escritorio no maneja el grupo de alumnado:
+        // si no llega, se conserva el actual en lugar de borrarlo
+        if (profesorDetalles.getGrupoAlumnado() != null) {
+            profesor.setGrupoAlumnado(profesorDetalles.getGrupoAlumnado());
+        }
 
         // 3. Guardamos los cambios en la base de datos
         return profesorRepository.save(profesor);
+    }
+
+    private static boolean esVacio(String texto) {
+        return texto == null || texto.isBlank();
     }
 
     @Override

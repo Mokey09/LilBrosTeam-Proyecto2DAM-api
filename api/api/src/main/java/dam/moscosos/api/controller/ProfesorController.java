@@ -94,10 +94,14 @@ public class ProfesorController {
 
     // PUT http://localhost:8080/profesores/1
     @Operation(summary = "Actualizar un profesor",
-            description = "Sustituye todos los datos del profesor indicado por los recibidos en el cuerpo.")
+            description = "Sustituye los datos del profesor indicado por los recibidos en el cuerpo. "
+                    + "Nombre, apellidos, DNI y email son obligatorios. Si no se envía contraseña, rol o grupo de alumnado, "
+                    + "se conservan los actuales.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Profesor actualizado"),
-            @ApiResponse(responseCode = "404", description = "No existe ningún profesor con ese ID", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Falta algún dato obligatorio", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No existe ningún profesor con ese ID", content = @Content),
+            @ApiResponse(responseCode = "409", description = "El DNI o el email ya pertenecen a otro profesor", content = @Content)
     })
     @PutMapping("/profesores/{id}")
     public ResponseEntity<Profesor> update(
