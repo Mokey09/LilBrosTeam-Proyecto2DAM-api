@@ -35,6 +35,10 @@ public class SecurityConfig {
                         // Único endpoint público
                         .requestMatchers("/auth/login").permitAll()
 
+                        // Spring reenvía los errores (400, 404, 500...) a /error. Si no se permite, cualquier
+                        // error se convierte en 401 y la app cree que el token ha caducado
+                        .requestMatchers("/error").permitAll()
+
                         // Cambiar la propia contraseña: cualquier usuario autenticado (solo afecta a su cuenta, se saca del token)
                         .requestMatchers(HttpMethod.PUT, "/auth/contrasena").authenticated()
 
