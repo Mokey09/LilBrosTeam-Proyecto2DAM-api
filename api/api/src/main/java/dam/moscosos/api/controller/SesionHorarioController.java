@@ -20,8 +20,7 @@ import java.util.List;
 @Tag(name = "Sesiones de horario", description = "Consulta y gestión de las sesiones del horario (profesor, grupo, día y franja horaria). "
         + "Todos los endpoints requieren rol GESTOR o DIRECTOR. El día de la semana se expresa como número (1 = lunes ... 5 = viernes).")
 @ApiResponses({
-        @ApiResponse(responseCode = "401", description = "Token ausente, inválido o caducado", content = @Content),
-        @ApiResponse(responseCode = "403", description = "El rol del usuario no tiene permiso (se requiere GESTOR o DIRECTOR)", content = @Content)
+        @ApiResponse(responseCode = "401", description = "Token ausente, inválido o caducado", content = @Content)
 })
 public class SesionHorarioController {
     @Autowired

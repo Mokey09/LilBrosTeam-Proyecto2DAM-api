@@ -12,5 +12,6 @@ public interface ProfesorService {
         Profesor save(Profesor profesor);
         Profesor update(Integer id, Profesor profesor);
         void delete(Integer id);
+        void cambiarContrasena(String email, String contrasenaActual, String contrasenaNueva);
 
 }

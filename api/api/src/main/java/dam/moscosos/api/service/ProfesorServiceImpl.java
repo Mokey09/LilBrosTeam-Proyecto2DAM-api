@@ -80,6 +80,23 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
+    public void cambiarContrasena(String email, String contrasenaActual, String contrasenaNueva) {
+        Profesor profesor = profesorRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profesor no encontrado"));
+
+        // Se devuelve 400 (y no 401) a propósito: un 401 haría que el cliente crea que el token ha caducado y cierre la sesión
+        if (!passwordEncoder.matches(contrasenaActual, profesor.getContrasena())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual no es correcta");
+        }
+        if (passwordEncoder.matches(contrasenaNueva, profesor.getContrasena())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La nueva contraseña debe ser distinta de la actual");
+        }
+
+        profesor.setContrasena(passwordEncoder.encode(contrasenaNueva));
+        profesorRepository.save(profesor);
+    }
+
+    @Override
     public void delete(Integer id) {
         if (!profesorRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profesor no encontrado para eliminar");

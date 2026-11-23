@@ -35,6 +35,9 @@ public class SecurityConfig {
                         // Único endpoint público
                         .requestMatchers("/auth/login").permitAll()
 
+                        // Cambiar la propia contraseña: cualquier usuario autenticado (solo afecta a su cuenta, se saca del token)
+                        .requestMatchers(HttpMethod.PUT, "/auth/contrasena").authenticated()
+
                         // Swagger UI y documentación OpenAPI (públicos para poder abrir la página; los endpoints siguen protegidos)
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
@@ -51,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/grupos/**").hasAnyRole("GESTOR", "DIRECTOR")
 
                         // Gestión de profesores: solo DIRECTOR
-                        .requestMatchers("/profesores/**").hasAnyRole( "DIRECTOR")
+                        .requestMatchers("/profesores/**").hasRole("DIRECTOR")
 
                         // Cualquier otra ruta que añadas en el futuro exige estar autenticado
                         .anyRequest().authenticated())

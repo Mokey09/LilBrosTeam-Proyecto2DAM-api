@@ -19,8 +19,7 @@ import java.util.List;
 @RestController
 @Tag(name = "Grupos de alumnado", description = "Gestión de los grupos de alumnado. Todos los endpoints requieren rol GESTOR o DIRECTOR.")
 @ApiResponses({
-        @ApiResponse(responseCode = "401", description = "Token ausente, inválido o caducado", content = @Content),
-        @ApiResponse(responseCode = "403", description = "El rol del usuario no tiene permiso (se requiere GESTOR o DIRECTOR)", content = @Content)
+        @ApiResponse(responseCode = "401", description = "Token ausente, inválido o caducado", content = @Content)
 })
 public class GrupoAlumnadoController {
 
